@@ -8,7 +8,7 @@ import fieldRoutes from './routes/fields.js'
 // import swaggerUi from 'swagger-ui-express'
 // import { swaggerSpec } from './swagger.js'
 
-import { errorHandler } from './middleware/errorHandler.js'
+import { errorHandler } from './middleware/errorhandler.js'
 
 const app = express()
 
