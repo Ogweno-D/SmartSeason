@@ -46,7 +46,11 @@ async function migrate() {
       stage_at_time TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     );
+
+    ALTER TABLE fields ADD CONSTRAINT IF NOT EXISTS fields_name_unique UNIQUE (name);
+    ALTER TABLE observations ADD CONSTRAINT IF NOT EXISTS observations_unique UNIQUE (field_id, note);
   `);
+
 
   console.log('Migration complete.');
   await pool.end();
