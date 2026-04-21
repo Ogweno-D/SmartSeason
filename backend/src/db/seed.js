@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 import { query, end } from './index';
 import { hashSync } from 'bcryptjs';
 

@@ -1,8 +1,8 @@
 require('dotenv').config();
-const pool = require('./index');
+import { query, end } from './index';
 
 async function migrate() {
-  await pool.query(`
+  await query(`
         -- USERS (AUTH CORE)
         CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -52,7 +52,7 @@ async function migrate() {
     );
   `);
   console.log('Migration complete.');
-  await pool.end();
+  await end();
 }
 
 migrate().catch(err => { console.error(err); process.exit(1); });
