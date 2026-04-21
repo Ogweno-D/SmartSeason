@@ -13,7 +13,7 @@ async function migrate() {
       created_at TIMESTAMP DEFAULT NOW()
     );
 
-    -- REFRESH TOKENS (AUTH SESSION LAYER)
+    -- REFRESH TOKENS
     CREATE TABLE IF NOT EXISTS refresh_tokens (
       id SERIAL PRIMARY KEY,
       user_id INT REFERENCES users(id) ON DELETE CASCADE,
@@ -46,11 +46,29 @@ async function migrate() {
       stage_at_time TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     );
-
-    ALTER TABLE fields ADD CONSTRAINT IF NOT EXISTS fields_name_unique UNIQUE (name);
-    ALTER TABLE observations ADD CONSTRAINT IF NOT EXISTS observations_unique UNIQUE (field_id, note);
   `);
 
+  // Add constraints safely (only if missing)
+
+  await pool.query(`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint 
+        WHERE conname = 'fields_name_unique'
+      ) THEN
+        ALTER TABLE fields ADD CONSTRAINT fields_name_unique UNIQUE (name);
+      END IF;
+
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint 
+        WHERE conname = 'observations_unique'
+      ) THEN
+        ALTER TABLE observations ADD CONSTRAINT observations_unique UNIQUE (field_id, note);
+      END IF;
+    END
+    $$;
+  `);
 
   console.log('Migration complete.');
   await pool.end();
