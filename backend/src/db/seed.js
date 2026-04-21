@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { query, end } from './index.js';
-import { hashSync } from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
+const { hashSync } = bcrypt;
 const hash = (p) => hashSync(p, 10);
 
 async function seed() {
