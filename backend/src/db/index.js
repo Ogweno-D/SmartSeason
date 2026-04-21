@@ -8,4 +8,7 @@ const pool = new Pool({
   }
 });
 
+export const query = (text, params) => pool.query(text, params);
+export const end = () => pool.end();
+
 export default pool;
