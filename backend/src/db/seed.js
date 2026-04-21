@@ -1,8 +1,8 @@
 require('dotenv').config();
-const pool = require('./index');
-const bcrypt = require('bcryptjs');
+import { query, end } from './index';
+import { hashSync } from 'bcryptjs';
 
-const hash = (p) => bcrypt.hashSync(p, 10);
+const hash = (p) => hashSync(p, 10);
 
 async function seed() {
   const users = [
@@ -12,7 +12,7 @@ async function seed() {
   ];
 
   for (const u of users) {
-    await pool.query(
+    await query(
       `INSERT INTO users (name, email, password, role)
        VALUES ($1,$2,$3,$4)
        ON CONFLICT (email) DO NOTHING`,
@@ -20,9 +20,9 @@ async function seed() {
     );
   }
 
-  const { rows: [alice] } = await pool.query(`SELECT id FROM users WHERE email = $1`, ['alice@smartseason.com']);
-  const { rows: [brian] } = await pool.query(`SELECT id FROM users WHERE email = $1`, ['brian@smartseason.com']);
-  const { rows: [admin] } = await pool.query(`SELECT id FROM users WHERE email = $1`, ['admin@smartseason.com']);
+  const { rows: [alice] } = await query(`SELECT id FROM users WHERE email = $1`, ['alice@smartseason.com']);
+  const { rows: [brian] } = await query(`SELECT id FROM users WHERE email = $1`, ['brian@smartseason.com']);
+  const { rows: [admin] } = await query(`SELECT id FROM users WHERE email = $1`, ['admin@smartseason.com']);
 
   const fields = [
     { name: 'North Block A', crop_type: 'Maize', planting_date: '2025-01-10', stage: 'Growing', agent: alice.id },
@@ -35,7 +35,7 @@ async function seed() {
   const fieldIds = [];
 
   for (const f of fields) {
-    const { rows: [row] } = await pool.query(
+    const { rows: [row] } = await query(
       `INSERT INTO fields (name, crop_type, planting_date, current_stage, assigned_agent_id, created_by)
        VALUES ($1,$2,$3,$4,$5,$6)
        ON CONFLICT (name)
@@ -48,7 +48,7 @@ async function seed() {
   }
 
   // Observation 1 (safe)
-  await pool.query(
+  await query(
     `INSERT INTO observations (field_id, agent_id, note, stage_at_time)
      VALUES ($1,$2,$3,$4)
      ON CONFLICT (field_id, note) DO NOTHING`,
@@ -58,7 +58,7 @@ async function seed() {
   // Observation 2 (safe + deterministic timestamp)
   const tenDaysAgo = new Date(Date.now() - 10 * 86400000).toISOString();
 
-  await pool.query(
+  await query(
     `INSERT INTO observations (field_id, agent_id, note, stage_at_time, created_at)
      VALUES ($1,$2,$3,$4,$5)
      ON CONFLICT (field_id, note) DO NOTHING`,
@@ -70,7 +70,7 @@ async function seed() {
   console.log('Alice: alice@smartseason.com / agent123');
   console.log('Brian: brian@smartseason.com / agent123');
 
-  await pool.end();
+  await end();
 }
 
 seed().catch(err => {
