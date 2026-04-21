@@ -39,7 +39,7 @@ export default function FieldDetail() {
   }
 
   if (!field) return (
-    <div className="min-h-screen bg-[var(--color-forest-pale)]">
+    <div className="min-h-screen bg-forest-pale">
       <Navbar />
       <div className="max-w-3xl mx-auto px-6 py-10 space-y-4">
         {[...Array(4)].map((_, i) => (

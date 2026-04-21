@@ -54,7 +54,7 @@ export default function Dashboard() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-          <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-[var(--shadow-card)]">
+          <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-(--shadow-card)">
             <p className="text-3xl font-bold text-gray-900">{fields.length}</p>
             <p className="text-xs text-gray-500 font-medium mt-1 uppercase tracking-wide">Total Fields</p>
           </div>
@@ -66,8 +66,8 @@ export default function Dashboard() {
                 key={s}
                 onClick={() => setFilter(filter === s ? 'All' : s)}
                 className={`
-                  rounded-xl border p-4 text-left transition-all shadow-[var(--shadow-card)]
-                  ${filter === s ? `${st.bg} border-transparent ring-2 ring-[var(--color-forest-mid)]/30` : 'bg-white border-gray-100 hover:shadow-md'}
+                  rounded-xl border p-4 text-left transition-all shadow-(--shadow-card)
+                  ${filter === s ? `${st.bg} border-transparent ring-2 ring-forest-mid/30` : 'bg-white border-gray-100 hover:shadow-md'}
                 `}
               >
                 <p className={`text-3xl font-bold ${st.num}`}>{count}</p>
@@ -81,7 +81,7 @@ export default function Dashboard() {
         {filter !== 'All' && (
           <div className="flex items-center gap-2 mb-4">
             <span className="text-sm text-gray-500">Filtering by:</span>
-            <span className="inline-flex items-center gap-1.5 bg-[var(--color-forest-light)] text-[var(--color-forest)] text-xs font-medium px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 bg-forest-light text-forest text-xs font-medium px-3 py-1 rounded-full">
               {filter}
               <button onClick={() => setFilter('All')} className="hover:text-red-600 ml-1">×</button>
             </span>
