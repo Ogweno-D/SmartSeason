@@ -1,11 +1,11 @@
-require('dotenv').config();
-
-import { query, end } from './index';
+import 'dotenv/config';
+import { query, end } from './index.js';
 import { hashSync } from 'bcryptjs';
 
 const hash = (p) => hashSync(p, 10);
 
 async function seed() {
+  // ---------------- USERS ----------------
   const users = [
     { name: 'Admin User', email: 'admin@smartseason.com', password: hash('admin123'), role: 'admin' },
     { name: 'Alice Kamau', email: 'alice@smartseason.com', password: hash('agent123'), role: 'agent' },
@@ -21,10 +21,23 @@ async function seed() {
     );
   }
 
-  const { rows: [alice] } = await query(`SELECT id FROM users WHERE email = $1`, ['alice@smartseason.com']);
-  const { rows: [brian] } = await query(`SELECT id FROM users WHERE email = $1`, ['brian@smartseason.com']);
-  const { rows: [admin] } = await query(`SELECT id FROM users WHERE email = $1`, ['admin@smartseason.com']);
+  // ---------------- FETCH USERS ----------------
+  const { rows: [alice] } = await query(
+    `SELECT id FROM users WHERE email = $1`,
+    ['alice@smartseason.com']
+  );
 
+  const { rows: [brian] } = await query(
+    `SELECT id FROM users WHERE email = $1`,
+    ['brian@smartseason.com']
+  );
+
+  const { rows: [admin] } = await query(
+    `SELECT id FROM users WHERE email = $1`,
+    ['admin@smartseason.com']
+  );
+
+  // ---------------- FIELDS ----------------
   const fields = [
     { name: 'North Block A', crop_type: 'Maize', planting_date: '2025-01-10', stage: 'Growing', agent: alice.id },
     { name: 'South Valley', crop_type: 'Wheat', planting_date: '2025-01-05', stage: 'Ready', agent: alice.id },
@@ -48,7 +61,9 @@ async function seed() {
     fieldIds.push(row.id);
   }
 
-  // Observation 1 (safe)
+  // ---------------- OBSERVATIONS ----------------
+
+  // Observation 1
   await query(
     `INSERT INTO observations (field_id, agent_id, note, stage_at_time)
      VALUES ($1,$2,$3,$4)
@@ -56,7 +71,7 @@ async function seed() {
     [fieldIds[0], alice.id, 'Healthy growth, irrigation running well.', 'Growing']
   );
 
-  // Observation 2 (safe + deterministic timestamp)
+  // Observation 2 (stale data simulation)
   const tenDaysAgo = new Date(Date.now() - 10 * 86400000).toISOString();
 
   await query(
