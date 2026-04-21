@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Lexend Deca', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  --color-forest: #1c4a2e;
+  --color-forest-mid: #2d6a45;
+  --color-forest-light: #e6f2eb;
+  --color-forest-pale: #f2f8f4;
+  --color-earth: #8b5e3c;
+  --color-straw: #d4a843;
+  --color-risk: #c0392b;
+  --color-risk-light: #fdf0ee;
+  --color-done: #6b7280;
+
+  --radius-card: 1rem;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-hover: 0 8px 24px -4px rgb(0 0 0 / 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-forest-pale);
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-forest-light);
+  color: var(--color-forest);
+}
