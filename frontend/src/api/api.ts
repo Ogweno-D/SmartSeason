@@ -2,7 +2,7 @@ import axios,{ AxiosHeaders, type InternalAxiosRequestConfig } from 'axios'
 import type { Field, Agent, AuthResponse } from '../types'
 
 const http = axios.create({
-  baseURL: '/api'
+  baseURL: import.meta.env.VITE_API_URL
 })
 
 /* ---------------- TOKEN ATTACH ---------------- */

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import type { Field } from '../src/types'
 import { StatusBadge } from './StatusBadge'
-import { StagePips } from './Stagepips'
+import { StagePips } from './StagePips'
 
 export function FieldCard({ field }: { field: Field }) {
   const nav = useNavigate()
@@ -9,7 +9,7 @@ export function FieldCard({ field }: { field: Field }) {
     <article
       onClick={() => nav(`/fields/${field.id}`)}
       className="
-        group bg-white rounded-[var(--radius-card)] border border-gray-100
+        group bg-white rounded-(--radius-card) border border-gray-100
         p-5 cursor-pointer select-none
         shadow-[var(--shadow-card)]
         hover:shadow-[var(--shadow-hover)] hover:-translate-y-0.5

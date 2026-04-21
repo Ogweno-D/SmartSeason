@@ -4,7 +4,7 @@ import { api } from '../src/api/api'
 import type { Field, Stage } from '../src/types'
 import { Navbar } from '../components/Navbar'
 import { StatusBadge } from '../components/StatusBadge'
-import { StagePips, StageDot } from '../components/Stagepips'
+import { StagePips, StageDot } from '../components/StagePips'
 import { useAuth } from '../context/AuthContext'
 
 const STAGES: Stage[] = ['Planted', 'Growing', 'Ready', 'Harvested']
