@@ -17,7 +17,9 @@ export function Navbar() {
           onClick={() => nav('/')}
           className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
         >
-          <span className="text-lg">🌾</span>
+          {/* Logo */}
+          <span className="text-lg">
+          </span>
           <span className="font-semibold text-forest tracking-tight">SmartSeason</span>
         </button>
 
