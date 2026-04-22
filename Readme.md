@@ -1,5 +1,30 @@
 # SmartSeason — Field Monitoring System
 
+## Overview
+
+SmartSeason is a simple full-stack web application for tracking crop progress across multiple fields during a growing season. It supports role-based access for Admins and Field Agents, enabling structured monitoring and reporting.
+
+---
+
+## Tech Stack
+
+- **Frontend:** React  with Typescript(Vite)
+- **Backend:** Node.js (Express)
+- **Database:** PostgreSQL
+- **Auth:** JWT (Access + Refresh Tokens)
+
+---
+
+## Architecture
+
+Frontend (React)  
+      ↓  
+Backend (Node.js API)  
+      ↓  
+PostgreSQL  
+
+---
+
 ## Setup
 
 ### Backend
@@ -36,9 +61,30 @@ REFRESH_SECRET=also_change_me_in_production
 
 | Role  | Email                       | Password |
 |-------|-----------------------------|----------|
-| Admin | admin@smartseason.com       | admin123 |
-| Agent | alice@smartseason.com       | agent123 |
-| Agent | brian@smartseason.com       | agent123 |
+| Admin | <admin@smartseason.com>       | admin123 |
+| Agent | <alice@smartseason.com>       | agent123 |
+| Agent | <brian@smartseason.com>       | agent123 |
+
+---
+
+## API Overview
+
+### Auth
+
+- POST /auth/login
+- POST /auth/refresh
+- POST /auth/logout
+
+### Fields
+
+- GET /fields
+- POST /fields
+- PATCH /fields/:id
+- DELETE /fields/:id
+
+### Observations
+
+- POST /fields/:id/observations
 
 ---
 
@@ -53,7 +99,38 @@ Status is computed at read-time from `current_stage` and the most recent observa
 | Stage = `Planted`, 14+ days since planting, no observation in 7+ days | **At Risk** |
 | Everything else | **Active** |
 
+### Example
+
+Field:
+
+- Stage: Growing  
+- Last observation: 10 days ago  
+
+→ Status: **At Risk**
+
+---
+
 > Think of it like a smoke detector — it only fires when the crop is mature **and** no one has checked in recently.
+
+---
+
+## UI Preview
+
+Admin Dashboard
+
+![Admin Dashboard](./docs/admin-dashboard.jpg)
+
+Add new field
+
+![Field modal](./docs/field-modal.jpg)
+
+Agent Dashboard
+
+![Agent Dashboard](./docs/agent-dashboard.jpg)
+
+Field card
+
+![Field card](./docs/field-card.jpg)
 
 ---
 
