@@ -1,0 +1,15 @@
+<svg width="260" height="80" viewBox="0 0 260 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Seasonal arc -->
+  <path d="M40 40 A26 26 0 1 1 39.9 40"
+        stroke="#2d6a45"
+        stroke-width="3"
+        fill="none"/>
+
+  <!-- Leaf -->
+  <path d="M40 24 C52 30, 52 50, 40 56 C28 50, 28 30, 40 24 Z"
+        fill="#2d6a45"/>
+
+  <!-- Sun accent -->
+  <circle cx="58" cy="24" r="4" fill="#d4a843"/>
+
+</svg>

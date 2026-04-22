@@ -104,7 +104,7 @@ export default function Dashboard() {
           <div className="text-center py-16 text-risk">{error}</div>
         ) : visible.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
-            <p className="text-4xl mb-3">🌱</p>
+            <p className="text-4xl mb-3"></p>
             <p className="font-medium">No fields found</p>
             <p className="text-sm mt-1">
               {filter !== 'All' ? 'No fields match this filter.' : user?.role === 'admin' ? 'Create your first field to get started.' : 'You have no assigned fields yet.'}
