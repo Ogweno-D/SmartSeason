@@ -6,7 +6,7 @@ const { hashSync } = bcrypt;
 const hash = (p) => hashSync(p, 10);
 
 async function seed() {
-  // ---------------- USERS ----------------
+  // USERS
   const users = [
     { name: 'Admin User', email: 'admin@smartseason.com', password: hash('admin123'), role: 'admin' },
     { name: 'Alice Kamau', email: 'alice@smartseason.com', password: hash('agent123'), role: 'agent' },
@@ -22,7 +22,7 @@ async function seed() {
     );
   }
 
-  // ---------------- FETCH USERS ----------------
+  // FETCH USERS
   const { rows: [alice] } = await query(
     `SELECT id FROM users WHERE email = $1`,
     ['alice@smartseason.com']
@@ -38,7 +38,7 @@ async function seed() {
     ['admin@smartseason.com']
   );
 
-  // ---------------- FIELDS ----------------
+  // FIELDS
   const fields = [
     { name: 'North Block A', crop_type: 'Maize', planting_date: '2025-01-10', stage: 'Growing', agent: alice.id },
     { name: 'South Valley', crop_type: 'Wheat', planting_date: '2025-01-05', stage: 'Ready', agent: alice.id },
@@ -62,7 +62,7 @@ async function seed() {
     fieldIds.push(row.id);
   }
 
-  // ---------------- OBSERVATIONS ----------------
+  // 
 
   // Observation 1
   await query(

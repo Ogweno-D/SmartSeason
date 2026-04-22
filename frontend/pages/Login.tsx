@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { api } from '../src/api/api'
@@ -13,7 +13,7 @@ export default function Login() {
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }))
 
-  const submit = async (e: FormEvent) => {
+  const submit = async (e: SubmitEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -30,8 +30,8 @@ export default function Login() {
     }
   }
 
-  const fillDemo = (email: string, password: string) =>
-    setForm({ email, password })
+  // const fillDemo = (email: string, password: string) =>
+  //   setForm({ email, password })
 
   return (
     <div className="min-h-screen bg-forest-pale flex items-center justify-center p-4">
@@ -89,8 +89,8 @@ export default function Login() {
           </form>
         </div>
 
-        {/* Demo credentials */}
-        <div className="mt-4 bg-white/70 backdrop-blur rounded-xl border border-gray-100 px-5 py-4">
+        {/* Demo Credentials */}
+        {/* <div className="mt-4 bg-white/70 backdrop-blur rounded-xl border border-gray-100 px-5 py-4">
           <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-3">Demo accounts</p>
           <div className="space-y-2">
             {[
@@ -111,7 +111,7 @@ export default function Login() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

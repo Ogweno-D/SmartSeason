@@ -1,11 +1,8 @@
-// controllers/auth.js
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import pool from '../db/index.js'
 
-/**
- * LOGIN
- */
+// Login
 export async function login(req, res) {
   const { email, password } = req.body
 
@@ -55,6 +52,65 @@ export async function login(req, res) {
   }
 }
 
+// Register
+export async function register(req, res) {
+  const { email, password, role } = req.body
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password required' })
+  }
+
+  try {
+    const existing = await pool.query(
+      'SELECT id FROM users WHERE email = $1',
+      [email]
+    )
+
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: 'User already exists' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const { rows } = await pool.query(
+      `INSERT INTO users (email, password, role)
+       VALUES ($1, $2, $3)
+       RETURNING id, email, role`,
+      [email, hashedPassword, role || 'user']
+    )
+
+    const user = rows[0]
+
+    const accessToken = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' }
+    )
+
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      process.env.REFRESH_SECRET,
+      { expiresIn: '7d' }
+    )
+
+    await pool.query(
+      `INSERT INTO refresh_tokens (user_id, token, expires_at)
+       VALUES ($1,$2,NOW() + interval '7 days')`,
+      [user.id, refreshToken]
+    )
+
+    res.status(201).json({
+      user,
+      accessToken,
+      refreshToken
+    })
+
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
 // Logout
 export async function logout(req, res) {
   const { token } = req.body
@@ -86,7 +142,6 @@ export async function refresh(req, res) {
   }
 
   try {
-    // 1. Check DB (must exist + not revoked)
     const stored = await pool.query(
       `SELECT * FROM refresh_tokens
        WHERE token = $1 AND revoked = false`,
@@ -98,10 +153,8 @@ export async function refresh(req, res) {
       return res.status(403).json({ error: 'Invalid refresh token' })
     }
 
-    // 2. Verify token
     const decoded = jwt.verify(token, process.env.REFRESH_SECRET)
 
-    // 3. Get user
     const { rows } = await pool.query(
       'SELECT * FROM users WHERE id = $1',
       [decoded.id]
@@ -112,13 +165,11 @@ export async function refresh(req, res) {
       return res.status(403).json({ error: 'User not found' })
     }
 
-    // 4. Revoke old refresh token (rotation)
     await pool.query(
       'UPDATE refresh_tokens SET revoked = true WHERE token = $1',
       [token]
     )
 
-    // 5. Issue new tokens
     const newAccessToken = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,

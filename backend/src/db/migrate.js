@@ -48,7 +48,7 @@ async function migrate() {
     );
   `);
 
-  // Add constraints safely (only if missing)
+  // Add constraints
 
   await pool.query(`
     DO $$

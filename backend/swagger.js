@@ -10,7 +10,7 @@ export const swaggerSpec = swaggerJSDoc({
     },
     servers: [
       {
-        url: 'http://localhost:4000'
+        url: ''
       }
     ],
     components: {
